@@ -1,0 +1,59 @@
+@page "/"
+@using HtmlBuilder.Builder
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@foreach (ControlDetails control in ControlList) {
+  @((MarkupString)control.XML);
+}
+
+<p><button type="button" @onclick="incluiForm">Inclui Form</button></p>
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+  private List<ControlDetails> ControlList = new List<ControlDetails>();
+  private Dictionary<string, string> Values;
+
+  protected override async Task OnInitializedAsync() {
+    await Task.Yield();
+
+    MontaDummyForm mf = new MontaDummyForm();
+    ControlList = mf.Usuario();
+    Values = ControlList.ToDictionary(c => c.Label, c => "");
+  }
+
+  // Acrescenta HTML
+  private async Task incluiForm() {
+    MontaDummyForm nf = new MontaDummyForm();
+    List<ControlDetails> cl = nf.Usuario();
+    Dictionary<string, string> novo = cl.ToDictionary(c => c.Label, c => "");
+    Values.Add(Guid.NewGuid().ToString("N"), novo.Values.ElementAt(0));
+
+    string stXML = "";
+    ControlList.AddRange(cl);
+    foreach (ControlDetails control in ControlList) {
+      stXML += (MarkupString)control.XML;
+    }
+
+    // Atualiza renderização
+    await InvokeAsync(() => {
+      base.StateHasChanged();
+    });
+  }
+
+  void ValueChanged(ChangeEventArgs a, string label) {
+    Values[label] = a.Value.ToString();
+  }
+
+  string GetValue(string label) {
+    return Values[label];
+  }
+
+  private void OnClick(MouseEventArgs e) {
+    // send your Values
+  }
+}
