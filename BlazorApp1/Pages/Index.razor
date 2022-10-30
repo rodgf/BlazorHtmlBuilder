@@ -10,7 +10,7 @@ Welcome to your new app.
   @((MarkupString)control.XML);
 }
 
-<p><button type="button" @onclick="incluiForm">Inclui Form</button></p>
+<p><button type="button" @onclick="incluiForm">Include Form</button></p>
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
@@ -21,14 +21,14 @@ Welcome to your new app.
   protected override async Task OnInitializedAsync() {
     await Task.Yield();
 
-    MontaDummyForm mf = new MontaDummyForm();
+    ComposeDummyForm mf = new ComposeDummyForm();
     ControlList = mf.Usuario();
     Values = ControlList.ToDictionary(c => c.Label, c => "");
   }
 
-  // Acrescenta HTML
+  // Insert HTML
   private async Task incluiForm() {
-    MontaDummyForm nf = new MontaDummyForm();
+    ComposeDummyForm nf = new ComposeDummyForm();
     List<ControlDetails> cl = nf.Usuario();
     Dictionary<string, string> novo = cl.ToDictionary(c => c.Label, c => "");
     Values.Add(Guid.NewGuid().ToString("N"), novo.Values.ElementAt(0));
@@ -39,7 +39,7 @@ Welcome to your new app.
       stXML += (MarkupString)control.XML;
     }
 
-    // Atualiza renderização
+    // Update renderization
     await InvokeAsync(() => {
       base.StateHasChanged();
     });

@@ -4,27 +4,27 @@ using System.Linq;
 namespace HtmlBuilder.Builder {
 
   //
-  public class MontaDummyForm {
+  public class ComposeDummyForm {
     private List<ControlDetails> ControlList;
     private Dictionary<string, string> Values;
 
-    // Form de entrada do usuário
+    // User input form
     public List<ControlDetails> Usuario() {
       DummyForm cf = new DummyForm();
       ControlList = cf.GetControlDetails();
       Values = ControlList.ToDictionary(c => c.Label, c => "");
 
-      // Monta elementos
+      // Compose elements
       foreach (ControlDetails control in ControlList) {
 
-        // Rótulos
+        // Lables
         if (control.IsRequired) {
           control.XML = "<div>" + control.Label + "*</div>";
         } else {
           control.XML = "<div>" + @control.Label + "</div>";
         }
 
-        // Campos
+        // Fields
         switch (control.Type) {
           case "TextEdit":
             control.XML += "<input value='" + Values[control.Label] + "' required=" + control.IsRequired + "/>";
