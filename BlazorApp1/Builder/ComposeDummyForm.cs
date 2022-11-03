@@ -17,7 +17,7 @@ namespace HtmlBuilder.Builder {
       // Mount elements
       foreach (ControlDetails control in df.ControlDetailsList) {
 
-        // Lables
+        // Labels
         if (control.IsRequired) {
           control.XML = "<div>" + control.Label + "*</div>";
         } else {
