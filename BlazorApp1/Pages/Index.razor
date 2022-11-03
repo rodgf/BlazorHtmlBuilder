@@ -6,54 +6,43 @@
 
 Welcome to your new app.
 
-@foreach (ControlDetails control in ControlList) {
-  @((MarkupString)control.XML);
-}
+@((MarkupString)MainXML)
 
-<p><button type="button" @onclick="incluiForm">Include Form</button></p>
+<p><button type="button" @onclick="includeForm">Include Form</button></p>
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 @code {
-  private List<ControlDetails> ControlList = new List<ControlDetails>();
-  private Dictionary<string, string> Values;
+  private List<Control> ControlList = new List<Control>();
 
-  protected override async Task OnInitializedAsync() {
-    await Task.Yield();
+  public string MainXML { get; set; }
 
+  //
+  protected override void OnInitialized() {
+
+    // Mount form
     ComposeDummyForm mf = new ComposeDummyForm();
-    ControlList = mf.Usuario();
-    Values = ControlList.ToDictionary(c => c.Label, c => "");
+    ControlList.Add(mf.User());
+
+    // Compose XML
+    CtlHlp ctlHlp = new CtlHlp();
+    MainXML = ctlHlp.Combine(ControlList);
   }
 
   // Insert HTML
-  private async Task incluiForm() {
-    ComposeDummyForm nf = new ComposeDummyForm();
-    List<ControlDetails> cl = nf.Usuario();
-    Dictionary<string, string> novo = cl.ToDictionary(c => c.Label, c => "");
-    Values.Add(Guid.NewGuid().ToString("N"), novo.Values.ElementAt(0));
+  private async Task includeForm() {
 
-    string stXML = "";
-    ControlList.AddRange(cl);
-    foreach (ControlDetails control in ControlList) {
-      stXML += (MarkupString)control.XML;
-    }
+    // Mount form
+    ComposeDummyForm mf = new ComposeDummyForm();
+    ControlList.Add(mf.User());
+
+    // Compose XML
+    CtlHlp ctlHlp = new CtlHlp();
+    MainXML = ctlHlp.Combine(ControlList);
 
     // Update renderization
     await InvokeAsync(() => {
       base.StateHasChanged();
     });
-  }
-
-  void ValueChanged(ChangeEventArgs a, string label) {
-    Values[label] = a.Value.ToString();
-  }
-
-  string GetValue(string label) {
-    return Values[label];
-  }
-
-  private void OnClick(MouseEventArgs e) {
-    // send your Values
   }
 }

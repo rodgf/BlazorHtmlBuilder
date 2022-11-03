@@ -3,19 +3,19 @@ using System.Linq;
 
 namespace HtmlBuilder.Builder {
 
-  //
+  // Html Control Example
   public class ComposeDummyForm {
-    private List<ControlDetails> ControlList;
     private Dictionary<string, string> Values;
 
-    // User input form
-    public List<ControlDetails> Usuario() {
-      DummyForm cf = new DummyForm();
-      ControlList = cf.GetControlDetails();
-      Values = ControlList.ToDictionary(c => c.Label, c => "");
+    // User entry form
+    public Control User() {
+      DummyForm df = new DummyForm();
+      df.TagName = "div";
+      df.ControlDetails.Class = "formGen";
+      Values = df.ControlDetailsList.ToDictionary(c => c.Label, c => "");
 
-      // Compose elements
-      foreach (ControlDetails control in ControlList) {
+      // Mount elements
+      foreach (ControlDetails control in df.ControlDetailsList) {
 
         // Lables
         if (control.IsRequired) {
@@ -27,16 +27,16 @@ namespace HtmlBuilder.Builder {
         // Fields
         switch (control.Type) {
           case "TextEdit":
-            control.XML += "<input value='" + Values[control.Label] + "' required=" + control.IsRequired + "/>";
+            control.XML += "<input name='" + control.Name + "' title='" + control.Title + "' placeHolder='" + control.Placeholder + "' value='" + Values[control.Label] + "' required='" + control.IsRequired + "' />";
             break;
 
           case "DateEdit":
-            control.XML += "<input type='date' value='" + Values[control.Label] + "' onchange='ValueChanged(a, label)' required=" + control.IsRequired + "/>";
+            control.XML += "<input name='" + control.Name + "' title='" + control.Title + "' placeHolder='" + control.Placeholder + "' type='date' value='" + Values[control.Label] + "' required='" + control.IsRequired + "' />";
             break;
         }
       }
 
-      return ControlList;
+      return df;
     }
   }
 }

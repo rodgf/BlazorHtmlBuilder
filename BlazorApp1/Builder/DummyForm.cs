@@ -2,17 +2,15 @@ using System.Collections.Generic;
 
 namespace HtmlBuilder.Builder {
 
-  //
-  public class DummyForm {
+  // Control example
+  public class DummyForm: Control {
 
-    //
-    public List<ControlDetails> GetControlDetails() {
-      List<ControlDetails> result = new List<ControlDetails> {
-        new ControlDetails { Type = "TextEdit", Label = "First Name", IsRequired = true },
-        new ControlDetails { Type = "TextEdit", Label = "Last Name", IsRequired = true },
-        new ControlDetails { Type = "DateEdit", Label = "Birth Date", IsRequired = false }
+    public DummyForm() {
+      ControlDetailsList = new List<ControlDetails>() {
+        new ControlDetails { Type = "TextEdit", Name="FirstName", Title="User`s first name", Placeholder = "", Label = "First Name", IsRequired = true },
+        new ControlDetails { Type = "TextEdit", Name="LastName", Title="User`s first name", Placeholder = "", Label = "Last Name", IsRequired = true },
+        new ControlDetails { Type = "DateEdit", Name="BirthDate", Title="User`s first name", Placeholder = "", Label = "Birth Date", IsRequired = false }
       };
-      return result;
     }
   }
 }
