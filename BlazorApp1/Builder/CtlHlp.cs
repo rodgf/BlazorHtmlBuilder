@@ -6,7 +6,7 @@ namespace HtmlBuilder.Builder {
   public class CtlHlp {
 
     // Combine HTML Controls
-    public string Combine(List<Control> controls) {
+    public static string Combine(List<Control> controls) {
       string xml = "";
 
       foreach (Control control in controls) {
@@ -17,7 +17,7 @@ namespace HtmlBuilder.Builder {
     }
 
     // Combine tags and nested tags
-    public string Compose(Control control) {
+    public static string Compose(Control control) {
       string xml = "";
 
       // Open tag

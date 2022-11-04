@@ -48,8 +48,7 @@ Welcome to your new app.
     ETable = _et.Create();
 
     // Compose XML
-    CtlHlp ctlHlp = new CtlHlp();
-    MainXML = ctlHlp.Combine(ControlList);
+    MainXML = CtlHlp.Combine(ControlList);
   }
 
   // Insert HTML
@@ -64,8 +63,7 @@ Welcome to your new app.
     ControlList.Add(mf.User());
 
     // Compose XML
-    CtlHlp ctlHlp = new CtlHlp();
-    MainXML = ctlHlp.Combine(ControlList);
+    MainXML = CtlHlp.Combine(ControlList);
 
     // Update renderization
     await InvokeAsync(() => {
