@@ -6,16 +6,29 @@
 
 Welcome to your new app.
 
+<div style="padding: 20px;">
+  @ETitle
+</div>
+
+<div style="padding: 20px;">
+  @ETable
+</div>
+
 @((MarkupString)MainXML)
 
-<p><button type="button" @onclick="includeForm">Include Form</button></p>
+<div style="padding: 20px;">
+  <button type="button" @onclick="includeForm">Include Form</button>
+</div>
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 @code {
   private List<Control> ControlList = new List<Control>();
+  private ExampleTable _et = new ExampleTable();
 
-  public string MainXML { get; set; }
+  protected string MainXML { get; set; }
+  protected RenderFragment ETitle { get; set; }
+  protected RenderFragment ETable { get; set; }
 
   //
   protected override void OnInitialized() {
@@ -24,6 +37,16 @@ Welcome to your new app.
     ComposeDummyForm mf = new ComposeDummyForm();
     ControlList.Add(mf.User());
 
+    // Compose Example Title
+    ETitle = CmpHlp.ComposeExample("id01", "Entry 01");
+
+    // Compose Example Table
+    _et.Rows = new Dictionary<string, string>() {
+      { "Ref1", "" },
+      { "Ref2", "" }
+    };
+    ETable = _et.Create();
+
     // Compose XML
     CtlHlp ctlHlp = new CtlHlp();
     MainXML = ctlHlp.Combine(ControlList);
@@ -31,6 +54,10 @@ Welcome to your new app.
 
   // Insert HTML
   private async Task includeForm() {
+
+    // Change table data
+    _et.Rows["Ref1"] = "Value 1";
+    _et.Rows["Ref2"] = "Value 2";
 
     // Mount form
     ComposeDummyForm mf = new ComposeDummyForm();

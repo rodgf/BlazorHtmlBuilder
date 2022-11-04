@@ -27,7 +27,7 @@ namespace HtmlBuilder.Builder {
         // Fields
         switch (control.Type) {
           case "TextEdit":
-            control.XML += "<input name='" + control.Name + "' title='" + control.Title + "' placeHolder='" + control.Placeholder + "' value='" + Values[control.Label] + "' required='" + control.IsRequired + "' />";
+            control.XML += "<input name='" + control.Name + "' title='" + control.Title + "' placeHolder='" + control.Placeholder + "'  required='" + control.IsRequired + "' />";
             break;
 
           case "DateEdit":
