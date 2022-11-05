@@ -29,9 +29,17 @@ namespace HtmlBuilder.Builder {
         "' style='" + control.ControlDetails.Style +
         "' required=" + control.ControlDetails.IsRequired + "/>\n";
 
+      // Content
+      xml += control.ControlDetails.XML;
+
       // Nested elements
       foreach (ControlDetails cd in control.ControlDetailsList) {
         xml += cd.XML + "\n";
+      }
+
+      // Nested controls
+      foreach (Control child in control.Controls) {
+        xml += Compose(child);
       }
 
       // Close tag

@@ -36,6 +36,14 @@ namespace HtmlBuilder.Builder {
         }
       }
 
+      // Summary text
+      df.Controls.Add(new DummySummary() {
+        ControlDetails = new ControlDetails() {
+          Style = "color: blue; padding: 20px;",
+          XML = "This form is mainly used to record basic user entries."
+        }
+      });
+
       return df;
     }
   }
