@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace HtmlBuilder.Builder {
 
@@ -21,13 +22,7 @@ namespace HtmlBuilder.Builder {
       string xml = "";
 
       // Open tag
-      xml += "<" + control.TagName +
-        " id='" + control.ControlDetails.ID +
-        "' name='" + control.ControlDetails.Name +
-        "' type='" + control.ControlDetails.Type +
-        "' class='" + control.ControlDetails.Class +
-        "' style='" + control.ControlDetails.Style +
-        "' required=" + control.ControlDetails.IsRequired + "/>\n";
+      xml += OpenTag(control);
 
       // Content
       xml += control.ControlDetails.XML;
@@ -46,6 +41,28 @@ namespace HtmlBuilder.Builder {
       xml += "</" + control.TagName + ">\n";
 
       return xml;
+    }
+
+    // Compose the open tag
+    private static string OpenTag(Control control) {
+      string openTag = "<" + control.TagName + " ";
+
+      PropertyInfo[] properties = typeof(ControlDetails).GetProperties();
+      foreach (PropertyInfo property in properties) {
+        if (property.GetValue(control.ControlDetails) != null
+            && property.PropertyType == typeof(string)
+            && property.Name != "XML") {
+          if (!string.IsNullOrEmpty(property.GetValue(control.ControlDetails).ToString())) {
+            openTag += property.Name.ToLower() + "='" + property.GetValue(control.ControlDetails).ToString() + "' ";
+          }
+        }
+      }
+      foreach (KeyValuePair<string, string> attr in control.ControlDetails.Data) {
+        openTag += attr.Key.ToLower() + "='" + attr.Value + "' ";
+      }
+      openTag += ">\n";
+
+        return openTag;
     }
   }
 }

@@ -18,7 +18,7 @@ namespace HtmlBuilder.Builder {
       foreach (ControlDetails control in df.ControlDetailsList) {
 
         // Labels
-        if (control.IsRequired) {
+        if (control.Required == "true") {
           control.XML = "<div>" + control.Label + "*</div>";
         } else {
           control.XML = "<div>" + @control.Label + "</div>";
@@ -27,11 +27,11 @@ namespace HtmlBuilder.Builder {
         // Fields
         switch (control.Type) {
           case "TextEdit":
-            control.XML += "<input name='" + control.Name + "' title='" + control.Title + "' placeHolder='" + control.Placeholder + "'  required='" + control.IsRequired + "' />";
+            control.XML += "<input name='" + control.Name + "' title='" + control.Title + "' placeHolder='" + control.Placeholder + "'  required='" + control.Required + "' />";
             break;
 
           case "DateEdit":
-            control.XML += "<input name='" + control.Name + "' title='" + control.Title + "' placeHolder='" + control.Placeholder + "' type='date' value='" + Values[control.Label] + "' required='" + control.IsRequired + "' />";
+            control.XML += "<input name='" + control.Name + "' title='" + control.Title + "' placeHolder='" + control.Placeholder + "' type='date' value='" + Values[control.Label] + "' required='" + control.Required + "' />";
             break;
         }
       }
@@ -40,6 +40,7 @@ namespace HtmlBuilder.Builder {
       df.Controls.Add(new DummySummary() {
         ControlDetails = new ControlDetails() {
           Style = "color: blue; padding: 20px;",
+          Data = new Dictionary<string, string>() { { "data-dummy", "dummy data" } },
           XML = "This form is mainly used to record basic user entries."
         }
       });
