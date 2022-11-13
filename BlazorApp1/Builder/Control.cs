@@ -8,5 +8,7 @@ namespace HtmlBuilder.Builder {
     public ControlDetails ControlDetails { get; set; } = new ControlDetails();
     public List<ControlDetails> ControlDetailsList { get; set; } = new List<ControlDetails>();
     public List<Control> Controls { get; set; } = new List<Control>();
+
+    public virtual void OnRender() { }
   }
 }

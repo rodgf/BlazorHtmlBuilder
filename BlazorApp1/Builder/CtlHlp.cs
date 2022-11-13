@@ -18,29 +18,40 @@ namespace HtmlBuilder.Builder {
     }
 
     // Combine tags and nested tags
-    public static string Compose(Control control) {
-      string xml = "";
+    public static string Compose(Control control, string xml = "") {
+      string stXML = xml;
 
-      // Open tag
-      xml += OpenTag(control);
+      // Prepare element
+      control.OnRender();
 
-      // Content
-      xml += control.ControlDetails.XML;
+      // Content list
+      if (control.ControlDetailsList.Count > 0 && !string.IsNullOrEmpty(control.ControlDetails.XML)) {
+        stXML += control.ControlDetails.XML;
+      } else {
 
-      // Nested elements
-      foreach (ControlDetails cd in control.ControlDetailsList) {
-        xml += cd.XML + "\n";
+        // Open tag
+        stXML += OpenTag(control);
+
+        // Contents
+        if (!string.IsNullOrEmpty(control.ControlDetails.XML))
+          stXML += control.ControlDetails.XML;
+
+        // Nested elements
+        foreach (ControlDetails cd in control.ControlDetailsList) {
+          stXML += cd.XML + "\n";
+        }
+
+        // Nested controls
+        foreach (Control child in control.Controls) {
+          stXML = Compose(child, stXML);
+        }
+
+        // Close tag
+        stXML += "</" + control.TagName + ">\n";
       }
 
-      // Nested controls
-      foreach (Control child in control.Controls) {
-        xml += Compose(child);
-      }
-
-      // Close tag
-      xml += "</" + control.TagName + ">\n";
-
-      return xml;
+      control.ControlDetails.XML = stXML;
+      return stXML;
     }
 
     // Compose the open tag
@@ -62,7 +73,7 @@ namespace HtmlBuilder.Builder {
       }
       openTag += ">\n";
 
-        return openTag;
+      return openTag;
     }
   }
 }
