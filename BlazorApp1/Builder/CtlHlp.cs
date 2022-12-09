@@ -13,7 +13,10 @@ namespace HtmlBuilder.Builder {
       string xml = "";
 
       foreach (Control control in controls) {
-        xml += Compose(control);
+        if (IsComposed(control))
+          xml += control.ControlDetails.XML;
+        else
+          xml += Compose(control);
       }
 
       return xml;
@@ -22,6 +25,14 @@ namespace HtmlBuilder.Builder {
     // Combine tags and nested tags
     public static string Compose(Control control, string xml = "", Control parent = null, int i = 0) {
       string stXML = xml;
+
+      // Grant Contnrol has an ID
+      if (string.IsNullOrEmpty(control.ControlDetails.ID))
+        control.ControlDetails.ID = Guid.NewGuid().ToString("N");
+
+      // Check composed
+      if (IsComposed(control))
+        throw new Exception("Control already composed.");
 
       // Prepare element
       control.OnRender();
@@ -46,7 +57,7 @@ namespace HtmlBuilder.Builder {
         // Nested controls
         int ii = 0;
         foreach (Control child in control.Controls) {
-          if (!FindComposed(control, child)) {
+          if (!ExistSameChild(control, child)) {
             stXML = Compose(child, stXML, control, ii);
           } else {
             Control clone = (Control)child.Clone();
@@ -63,6 +74,14 @@ namespace HtmlBuilder.Builder {
 
       control.ControlDetails.XML = stXML;
       return stXML;
+    }
+
+    // Verify if the Control is already composed
+    public static bool IsComposed(Control control) {
+      if (control.ControlDetails.XML.Contains("id='" + control.ControlDetails.ID))
+        return true;
+
+      return false;
     }
 
     // Compose the open tag
@@ -100,18 +119,18 @@ namespace HtmlBuilder.Builder {
       control.Controls.Clear();
     }
 
-    // Find child in Control
-    public static bool FindComposed(Control control, Control child) {
+    // Find double referenced composed child in Control
+    public static bool ExistSameChild(Control control, Control child) {
       bool found = false;
       foreach (Control item in control.Controls) {
         if (string.IsNullOrEmpty(item.ControlDetails.ID))
           item.ControlDetails.ID = Guid.NewGuid().ToString("N");
         if (item.Equals(child)
-            && item.ControlDetails.XML.Contains(item.ControlDetails.ID)) {
+            && item.ControlDetails.XML.Contains("id='" + item.ControlDetails.ID)) {
           found = true;
           break;
         }
-        found = FindComposed(child, item);
+        found = ExistSameChild(child, item);
         if (found)
           break;
       }
