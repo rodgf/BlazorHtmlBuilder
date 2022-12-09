@@ -26,7 +26,7 @@ namespace HtmlBuilder.Builder {
     public static string Compose(Control control, string xml = "", Control parent = null, int i = 0) {
       string stXML = xml;
 
-      // Grant Contnrol has an ID
+      // Grant Control has an ID
       if (string.IsNullOrEmpty(control.ControlDetails.ID))
         control.ControlDetails.ID = Guid.NewGuid().ToString("N");
 
