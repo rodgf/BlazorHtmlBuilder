@@ -12,6 +12,32 @@ a, .btn-link {
     color: #0071c1;
 }
 
+input[type="date"]::before {
+  content: attr(placeholder);
+  position: absolute;
+  color: #999999;
+}
+
+input[type="date"]:read-only {
+  content: attr(value);
+  position: absolute;
+  color: #999999;
+}
+
+input[type="date"] {
+  color: #ffffff;
+}
+
+  input[type="date"]:focus,
+  input[type="date"]:valid {
+    color: #666666;
+  }
+
+    input[type="date"]:focus::before,
+    input[type="date"]:valid::before {
+      content: "";
+    }
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
