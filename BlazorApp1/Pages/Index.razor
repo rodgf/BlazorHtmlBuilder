@@ -14,6 +14,10 @@ Welcome to your new app.
   @ETable
 </div>
 
+<div style="padding: 20px;">
+  @((MarkupString)cbMembers.ControlDetails.XML)
+</div>
+
 @((MarkupString)MainXML)
 
 <div style="padding: 20px;">
@@ -29,6 +33,7 @@ Welcome to your new app.
   protected string MainXML { get; set; }
   protected RenderFragment ETitle { get; set; }
   protected RenderFragment ETable { get; set; }
+  protected SelectControl cbMembers { get; set; }
 
   //
   protected override void OnInitialized() {
@@ -47,8 +52,21 @@ Welcome to your new app.
     };
     ETable = _et.Create();
 
+    // Create combo box
+    OptionControl oc;
+    cbMembers = new SelectControl();
+    cbMembers.ControlDetails.ID = "cbMembers";
+    cbMembers.ControlDetails.Style = "width: 150px;";
+    oc = new OptionControl("Value 1", "Item 1");
+    cbMembers.Controls.Add(oc);
+    oc = new OptionControl("Value 2", "Item 2");
+    cbMembers.Controls.Add(oc);
+    oc = new OptionControl("Value 3", "Item 3");
+    cbMembers.Controls.Add(oc);
+
     // Compose XML
     MainXML = CtlHlp.Combine(ControlList);
+    CtlHlp.Compose(cbMembers);
   }
 
   // Insert HTML

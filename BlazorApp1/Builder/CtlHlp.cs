@@ -72,7 +72,8 @@ namespace HtmlBuilder.Builder {
         stXML += "</" + control.TagName + ">\n";
       }
 
-      control.ControlDetails.XML = stXML;
+      if (string.IsNullOrEmpty(control.ControlDetails.XML))
+        control.ControlDetails.XML = stXML;
       return stXML;
     }
 
@@ -149,8 +150,11 @@ namespace HtmlBuilder.Builder {
     // Enable/disable html control
     public static void Enable(this Control control, bool visible = true) {
       control.ControlDetails.Class = control.ControlDetails.Class.Replace("desabilita", "").Trim();
+      if (control.ControlDetails.Data.ContainsKey("disabled"))
+        control.ControlDetails.Data.Remove("disabled");
       if (!visible) {
         control.ControlDetails.Class += " desabilita";
+        control.ControlDetails.Data.Add("disabled", "disabled");
       }
     }
 
