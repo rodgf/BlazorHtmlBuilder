@@ -23,7 +23,7 @@ namespace HtmlBuilder.Builder {
     }
 
     // Combine tags and nested tags
-    public static string Compose(Control control, string xml = "", Control parent = null, int i = 0) {
+    public static string Compose(Control control, string xml = "", Control parent = null, int i = 0, bool force = false) {
       string stXML = xml;
 
       // Grant Control has an ID
@@ -72,7 +72,7 @@ namespace HtmlBuilder.Builder {
         stXML += "</" + control.TagName + ">\n";
       }
 
-      if (string.IsNullOrEmpty(control.ControlDetails.XML))
+      if (force || string.IsNullOrEmpty(control.ControlDetails.XML))
         control.ControlDetails.XML = stXML;
       return stXML;
     }

@@ -27,6 +27,16 @@ namespace HtmlBuilder.Builder {
       _selected = selected;
     }
 
+    public string RenderXML() {
+      OnRender();
+      ControlDetails.XML = "<option value=\"" + ControlDetails.Value + "\" " +
+        "class=\"" + ControlDetails.Class + "\" " +
+        "style=\"" + ControlDetails.Style + "\" " +
+        (!string.IsNullOrEmpty(ControlDetails.Selected) ? "selected=\"" + ControlDetails.Selected + "\" " : " ") +
+        ">" + ControlDetails.XML + "</option>";
+      return ControlDetails.XML;
+    }
+
     public override void OnRender() {
       if (_value != null)
         ControlDetails.Value = _value;
