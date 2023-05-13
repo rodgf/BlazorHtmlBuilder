@@ -14,7 +14,8 @@ namespace HtmlBuilder.Builder {
       ControlDetails.Type = "checkbox";
       if (!string.IsNullOrEmpty(Text))
         ControlDetails.Data.Add("data-text", Text);
-      ControlDetails.Onchange = "checkboxSwitcher(\"" + Command + "\", this.id, this.checked, this.dataset.text.length)";
+      if (!string.IsNullOrEmpty(Command))
+        ControlDetails.Onchange = "checkboxSwitcher(\"" + Command + "\", this.id, this.checked, this.dataset.text.length)";
     }
   }
 }
