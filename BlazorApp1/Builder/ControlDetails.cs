@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 
 namespace HtmlBuilder.Builder {
 
   // For child elements
-  public class ControlDetails {
+  public class ControlDetails: ICloneable {
     public string Label { get; set; }
     public string ID { get; set; } = "";
     public string Name { get; set; } = "";
@@ -28,5 +29,9 @@ namespace HtmlBuilder.Builder {
     public string Readonly { get; set; } = "";
     public Dictionary<string, string> Data = new Dictionary<string, string>();
     public string XML { get; set; } = ""; // element body
+
+    public object Clone() {
+      return this.MemberwiseClone();
+    }
   }
 }

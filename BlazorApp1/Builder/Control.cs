@@ -11,7 +11,15 @@ namespace HtmlBuilder.Builder {
     public List<Control> Controls { get; set; } = new List<Control>();
 
     public object Clone() {
-      return this.MemberwiseClone();
+      Control c = (Control)this.MemberwiseClone();
+      c.ControlDetails = (ControlDetails)c.ControlDetails.Clone();
+      c.Controls = new List<Control>();
+      foreach (Control control in this.Controls)
+        c.Controls.Add((Control)control.Clone());
+      c.ControlDetailsList = new List<ControlDetails>();
+      foreach (ControlDetails cd in this.ControlDetailsList)
+        c.ControlDetailsList.Add((ControlDetails)cd.Clone());
+      return c;
     }
 
     public virtual void OnRender() { }
