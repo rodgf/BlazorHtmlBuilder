@@ -4,7 +4,9 @@ using System.Collections.Generic;
 namespace HtmlBuilder.Builder {
 
   // Generic control class
-  public abstract class Control : ICloneable {
+  public abstract class Control : ICloneable, IDisposable {
+    private bool disposedValue;
+
     public string TagName { get; set; }
     public ControlDetails ControlDetails { get; set; } = new ControlDetails();
     public List<ControlDetails> ControlDetailsList { get; set; } = new List<ControlDetails>();
@@ -23,5 +25,20 @@ namespace HtmlBuilder.Builder {
     }
 
     public virtual void OnRender() { }
+
+    protected virtual void Dispose(bool disposing) {
+      if (!disposedValue) {
+        if (disposing) {
+          // dispose managed state (managed objects)
+        }
+
+        disposedValue = true;
+      }
+    }
+
+    public void Dispose() {
+      Dispose(disposing: true);
+      GC.SuppressFinalize(this);
+    }
   }
 }

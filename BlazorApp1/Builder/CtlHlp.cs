@@ -115,6 +115,7 @@ namespace HtmlBuilder.Builder {
     public static void WipeControl(Control control) {
       for (int i = 0; i < control.Controls.Count(); i++) {
         WipeControl(control.Controls[i]);
+        control.Controls[i].Dispose();
         control.Controls[i] = null;
       }
       control.Controls.Clear();
